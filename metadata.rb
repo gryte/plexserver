@@ -1,10 +1,10 @@
 name 'plexserver'
-maintainer 'The Authors'
-maintainer_email 'you@example.com'
+maintainer 'Adam Linkous'
+maintainer_email 'alinkous+support@gmail.com'
 license 'all_rights'
 description 'Installs/Configures plexserver'
 long_description 'Installs/Configures plexserver'
-version '0.1.0'
+version '0.2.0'
 
 # The `issues_url` points to the location where issues for this cookbook are
 # tracked.  A `View Issues` link will be displayed on this cookbook's page when
