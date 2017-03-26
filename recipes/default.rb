@@ -33,6 +33,7 @@ service 'firewalld' do
   action :start
 end
 
+# register firewalld rules
 execute 'firewalld_regservice' do
   command 'firewall-cmd --permanent --zone=public --add-service=plexmediaserver'
   action :nothing
