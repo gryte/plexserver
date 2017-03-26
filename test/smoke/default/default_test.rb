@@ -10,12 +10,24 @@ describe package('wget') do
   it { should be_installed }
 end
 
-# download directory exists
-describe directory('/tmp') do
-  it { should be_directory }
+# plex rpm is installed
+describe command('rpm -V plexmediaserver-1.4.4.3495-edef59192.x86_64.rpm') do
+  its('stdout') { should eq '' }
 end
 
-# plex rpm file exists
-describe file('/tmp/plexmediaserver-1.4.4.3495-edef59192.x86_64.rpm') do
-  it { should be_file }
+# plex service is enabled and running
+describe service('plexmediaserver') do
+  it { should be_installed }
+  it { should be_enabled }
+  it { should be_running }
+end
+
+# plex port 32400 is listening
+describe port(32_400) do
+  it { should be_listening }
+end
+
+# plex web app is running
+describe http('http://localhost:32400/web') do
+  its('status') { should eq 200 }
 end
