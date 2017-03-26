@@ -31,3 +31,8 @@ end
 describe http('http://localhost:32400/web/index.html') do
   its('status') { should cmp 200 }
 end
+
+# iptables is configured
+describe iptables(chain: 'IN_public_allow') do
+  it { should have_rule('-A IN_public_allow -p tcp -m tcp --dport 22 -m conntrack --ctstate NEW -j ACCEPT') }
+end
