@@ -5,6 +5,8 @@ This cookbook will install plex media server. Currently the supported OS is Cent
 ## What does it do?
 
 1. Installs wget if missing
-- Downloads plex rpm to /tmp
+- Downloads plex rpm
+- Installs plex rpm
+- Starts plex service
 
 *more details to come*
