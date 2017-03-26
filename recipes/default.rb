@@ -27,3 +27,29 @@ end
 service 'plexmediaserver' do
   action :enable
 end
+
+# firewalld service
+service 'firewalld' do
+  action :start
+end
+
+execute 'firewalld_regservice' do
+  command 'firewall-cmd --permanent --zone=public --add-service=plexmediaserver'
+  action :nothing
+  notifies :restart, 'service[firewalld]'
+end
+
+# create firewalld service file
+cookbook_file '/etc/firewalld/services/plexmediaserver.xml' do
+  source 'plexmediaserver.xml'
+  owner 'root'
+  group 'root'
+  mode '0644'
+  action :create
+  notifies :run, 'execute[firewalld_regservice]', :immediately
+end
+
+# firewalld service
+service 'firewalld' do
+  action :enable
+end

@@ -22,6 +22,13 @@ describe service('plexmediaserver') do
   it { should be_running }
 end
 
+# firewalld service is enabled and running
+describe service('firewalld') do
+  it { should be_installed }
+  it { should be_enabled }
+  it { should be_running }
+end
+
 # plex port 32400 is listening
 describe port(32_400) do
   it { should be_listening }
