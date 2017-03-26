@@ -11,8 +11,8 @@ describe package('wget') do
 end
 
 # plex rpm is installed
-describe command('rpm -V plexmediaserver-1.4.4.3495-edef59192.x86_64.rpm') do
-  its('stdout') { should eq '' }
+describe package('plexmediaserver') do
+  it { should be_installed }
 end
 
 # plex service is enabled and running
@@ -28,6 +28,6 @@ describe port(32_400) do
 end
 
 # plex web app is running
-describe http('http://localhost:32400/web') do
-  its('status') { should eq 200 }
+describe http('http://localhost:32400/web/index.html') do
+  its('status') { should cmp 200 }
 end
