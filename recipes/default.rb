@@ -47,7 +47,7 @@ cookbook_file '/etc/firewalld/services/plexmediaserver.xml' do
   group 'root'
   mode '0644'
   action :create
-  notifies :run, 'execute[firewalld_regservice]', :immediately
+  notifies :run, 'execute[firewalld_regservice]'
 end
 
 # firewalld service
