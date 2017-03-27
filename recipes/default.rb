@@ -30,7 +30,7 @@ end
 
 # firewalld service
 service 'firewalld' do
-  action :start
+  action [:enable, :start]
 end
 
 # reload firewalld config
@@ -62,9 +62,4 @@ cookbook_file '/etc/firewalld/services/plexmediaserver.xml' do
   mode '0644'
   action :create
   notifies :run, 'execute[firewalld_reload]', :immediately
-end
-
-# firewalld service
-service 'firewalld' do
-  action :enable
 end
