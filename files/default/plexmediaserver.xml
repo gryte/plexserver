@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<service>
+  <short>PLEX</short>
+  <description>This enables network access for Plex services as defined by https://support.plex.tv/hc/en-us/articles/201543147-What-network-ports-do-I-need-to-allow-through-my-firewall-.</description>
+  <port protocol="udp" port="1900"/>
+  <port protocol="tcp" port="3005"/>
+  <port protocol="udp" port="5353"/>
+  <port protocol="tcp" port="8324"/>
+  <port protocol="udp" port="32410"/>
+  <port protocol="udp" port="32412"/>
+  <port protocol="udp" port="32413"/>
+  <port protocol="udp" port="32414"/>
+  <port protocol="tcp" port="32469"/>
+  <port protocol="tcp" port="32400"/>
+</service>
