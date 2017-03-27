@@ -33,11 +33,18 @@ service 'firewalld' do
   action :start
 end
 
+# reload firewalld config
+execute 'firewalld_reload' do
+  command 'firewall-cmd --reload'
+  action :nothing
+  notifies :run, 'execute[firewalld_regservice]', :immediately
+end
+
 # register firewalld rules
 execute 'firewalld_regservice' do
   command 'firewall-cmd --permanent --add-service=plexmediaserver'
   action :nothing
-  notifies :run, 'execute[firewalld_regzone]'
+  notifies :run, 'execute[firewalld_regzone]', :immediately
 end
 
 # register firewalld zone
@@ -54,7 +61,7 @@ cookbook_file '/etc/firewalld/services/plexmediaserver.xml' do
   group 'root'
   mode '0644'
   action :create
-  notifies :run, 'execute[firewalld_regservice]'
+  notifies :run, 'execute[firewalld_reload]', :immediately
 end
 
 # firewalld service
