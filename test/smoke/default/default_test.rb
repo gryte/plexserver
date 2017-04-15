@@ -34,12 +34,6 @@ describe port(32_400) do
   it { should be_listening }
 end
 
-# plex web app is running
-## unable to get it to function as expected in kitchen runs; will have to revisit
-#describe http('http://localhost:32400/web/index.html') do
-  #its('status') { should cmp 200 }
-#end
-
 # iptables is configured
 describe iptables(chain: 'IN_public_allow') do
   it { should have_rule('-A IN_public_allow -p udp -m udp --dport 1900 -m conntrack --ctstate NEW -j ACCEPT') }

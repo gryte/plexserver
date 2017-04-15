@@ -67,7 +67,7 @@ end
 # enable plex repo
 yum_repository 'plex' do
   description 'PlexRepo'
-  baseurl "https://downloads.plex.tv/repo/rpm/$basearch/"
+  baseurl 'https://downloads.plex.tv/repo/rpm/$basearch/'
   gpgkey 'https://downloads.plex.tv/plex-keys/PlexSign.key'
   gpgcheck true
   enabled true
