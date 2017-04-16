@@ -10,5 +10,6 @@ This cookbook will install plex media server. Currently the supported OS is Cent
 - Starts plex service
 - Starts firewalld
 - Implements plex firewalld rules
+- enables plex yum repo
 
 *more details to come*

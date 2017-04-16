@@ -34,11 +34,6 @@ describe port(32_400) do
   it { should be_listening }
 end
 
-# plex web app is running
-describe http('http://localhost:32400/web/index.html') do
-  its('status') { should cmp 200 }
-end
-
 # iptables is configured
 describe iptables(chain: 'IN_public_allow') do
   it { should have_rule('-A IN_public_allow -p udp -m udp --dport 1900 -m conntrack --ctstate NEW -j ACCEPT') }
@@ -51,4 +46,10 @@ describe iptables(chain: 'IN_public_allow') do
   it { should have_rule('-A IN_public_allow -p udp -m udp --dport 32414 -m conntrack --ctstate NEW -j ACCEPT') }
   it { should have_rule('-A IN_public_allow -p tcp -m tcp --dport 32469 -m conntrack --ctstate NEW -j ACCEPT') }
   it { should have_rule('-A IN_public_allow -p tcp -m tcp --dport 32400 -m conntrack --ctstate NEW -j ACCEPT') }
+end
+
+# plex repo exists and is enabled
+describe yum.repo('plex') do
+  it { should exist }
+  it { should be_enabled }
 end

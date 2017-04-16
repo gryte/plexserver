@@ -63,3 +63,13 @@ cookbook_file '/etc/firewalld/services/plexmediaserver.xml' do
   action :create
   notifies :run, 'execute[firewalld_reload]', :immediately
 end
+
+# enable plex repo
+yum_repository 'plex' do
+  description 'PlexRepo'
+  baseurl 'https://downloads.plex.tv/repo/rpm/$basearch/'
+  gpgkey 'https://downloads.plex.tv/plex-keys/PlexSign.key'
+  gpgcheck true
+  enabled true
+  action :create
+end
