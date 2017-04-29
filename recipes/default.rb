@@ -9,17 +9,20 @@ package 'wget' do
   action :install
 end
 
-# download plex rpm
-remote_file 'plex-rpm_download' do
-  not_if { ::File.exist?("#{Chef::Config[:file_cache_path]}/plexmediaserver-1.4.4.3495-edef59192.x86_64.rpm") }
-  path "#{Chef::Config[:file_cache_path]}/plexmediaserver-1.4.4.3495-edef59192.x86_64.rpm"
-  source 'https://downloads.plex.tv/plex-media-server/1.4.4.3495-edef59192/plexmediaserver-1.4.4.3495-edef59192.x86_64.rpm'
+# enable plex repo
+yum_repository 'PlexRepo' do
+  description 'PlexRepo'
+  baseurl 'https://downloads.plex.tv/repo/rpm/$basearch/'
+  gpgkey 'https://downloads.plex.tv/plex-keys/PlexSign.key'
+  gpgcheck true
+  enabled true
+  action :create
 end
 
 # install plex rpm
-package 'plex-rpm' do
-  source "#{Chef::Config[:file_cache_path]}/plexmediaserver-1.4.4.3495-edef59192.x86_64.rpm"
-  action :install
+package 'plex' do
+  package_name 'plexmediaserver'
+  action :upgrade
   notifies :restart, 'service[plexmediaserver]'
 end
 
@@ -62,14 +65,4 @@ cookbook_file '/etc/firewalld/services/plexmediaserver.xml' do
   mode '0644'
   action :create
   notifies :run, 'execute[firewalld_reload]', :immediately
-end
-
-# enable plex repo
-yum_repository 'plex' do
-  description 'PlexRepo'
-  baseurl 'https://downloads.plex.tv/repo/rpm/$basearch/'
-  gpgkey 'https://downloads.plex.tv/plex-keys/PlexSign.key'
-  gpgcheck true
-  enabled true
-  action :create
 end

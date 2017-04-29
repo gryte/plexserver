@@ -49,7 +49,7 @@ describe iptables(chain: 'IN_public_allow') do
 end
 
 # plex repo exists and is enabled
-describe yum.repo('plex') do
+describe yum.repo('PlexRepo') do
   it { should exist }
   it { should be_enabled }
 end
