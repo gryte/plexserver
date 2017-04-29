@@ -5,11 +5,6 @@
 # The Inspec reference, with examples and extensive documentation, can be
 # found at http://inspec.io/docs/reference/resources/
 
-# wget is installed
-describe package('wget') do
-  it { should be_installed }
-end
-
 # plex rpm is installed
 describe package('plexmediaserver') do
   it { should be_installed }
@@ -49,7 +44,7 @@ describe iptables(chain: 'IN_public_allow') do
 end
 
 # plex repo exists and is enabled
-describe yum.repo('plex') do
+describe yum.repo('PlexRepo') do
   it { should exist }
   it { should be_enabled }
 end
