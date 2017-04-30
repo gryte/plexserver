@@ -4,6 +4,11 @@
 #
 # Copyright:: 2017, The Authors, All Rights Reserved.
 
+# enable platform default firewall
+firewall 'default' do
+  action :install
+end
+
 # enable plex repo
 yum_repository 'PlexRepo' do
   description 'PlexRepo'
@@ -26,38 +31,82 @@ service 'plexmediaserver' do
   action :enable
 end
 
-# firewalld service
-service 'firewalld' do
-  action [:enable, :start]
+# open ports for access to the Plex DLNA Server
+firewall_rule 'plex-dlna-udp' do
+  protocol :udp
+  port 1900
+  command :allow
 end
 
-# reload firewalld config
-execute 'firewalld_reload' do
-  command 'firewall-cmd --reload'
-  action :nothing
-  notifies :run, 'execute[firewalld_regservice]', :immediately
+firewall_rule 'plex-dlna-tcp' do
+  protocol :tcp
+  port 32469
+  command :allow
 end
 
-# register firewalld rules
-execute 'firewalld_regservice' do
-  command 'firewall-cmd --permanent --add-service=plexmediaserver'
-  action :nothing
-  notifies :run, 'execute[firewalld_regzone]', :immediately
+# open ports for controlling Plex Home Theater via Plex Companion
+firewall_rule 'plex-htc-cmpn' do
+  protocol :tcp
+  port 3005
+  command :allow
 end
 
-# register firewalld zone
-execute 'firewalld_regzone' do
-  command 'firewall-cmd --permanent --zone=public --add-service=plexmediaserver'
-  action :nothing
-  notifies :restart, 'service[firewalld]'
+# open ports for older Bonjour/Avahi network discovery
+firewall_rule 'bonjour-avahi' do
+  protocol :udp
+  port 5353
+  command :allow
 end
 
-# create firewalld service file
-cookbook_file '/etc/firewalld/services/plexmediaserver.xml' do
-  source 'plexmediaserver.xml'
-  owner 'root'
-  group 'root'
-  mode '0644'
-  action :create
-  notifies :run, 'execute[firewalld_reload]', :immediately
+# open ports for controlling Plex for Roku via Plex Companion
+firewall_rule 'plex-roku-cmpn' do
+  protocol :tcp
+  port 8324
+  command :allow
+end
+
+# open ports for current GDM network discovery
+firewall_rule 'gdm-ntwrk-dscvry' do
+  protocol :udp
+  port 32410..32414
+  command :allow
+end
+
+# open port for plex web access
+firewall_rule 'plex-web' do
+  protocol :tcp
+  port 32400
+  command :allow
+end
+
+# open ports for nfs
+firewall_rule 'nfs-tcp' do
+  protocol :tcp
+  port 2049
+  command :allow
+end
+
+firewall_rule 'nfs-udp' do
+  protocol :udp
+  port 2049
+  command :allow
+end
+
+# open ports for rpcbind/sunrpc
+firewall_rule 'rpcbind-sunrpc-tcp' do
+  protocol :tcp
+  port 111
+  command :allow
+end
+
+firewall_rule 'rpcbind-sunrpc-udp' do
+  protocol :udp
+  port 111
+  command :allow
+end
+
+# open port for ssh connections
+firewall_rule 'ssh' do
+  port 22
+  command :allow
 end

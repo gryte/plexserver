@@ -30,17 +30,19 @@ describe port(32_400) do
 end
 
 # iptables is configured
-describe iptables(chain: 'IN_public_allow') do
-  it { should have_rule('-A IN_public_allow -p udp -m udp --dport 1900 -m conntrack --ctstate NEW -j ACCEPT') }
-  it { should have_rule('-A IN_public_allow -p tcp -m tcp --dport 3005 -m conntrack --ctstate NEW -j ACCEPT') }
-  it { should have_rule('-A IN_public_allow -p udp -m udp --dport 5353 -m conntrack --ctstate NEW -j ACCEPT') }
-  it { should have_rule('-A IN_public_allow -p tcp -m tcp --dport 8324 -m conntrack --ctstate NEW -j ACCEPT') }
-  it { should have_rule('-A IN_public_allow -p udp -m udp --dport 32410 -m conntrack --ctstate NEW -j ACCEPT') }
-  it { should have_rule('-A IN_public_allow -p udp -m udp --dport 32412 -m conntrack --ctstate NEW -j ACCEPT') }
-  it { should have_rule('-A IN_public_allow -p udp -m udp --dport 32413 -m conntrack --ctstate NEW -j ACCEPT') }
-  it { should have_rule('-A IN_public_allow -p udp -m udp --dport 32414 -m conntrack --ctstate NEW -j ACCEPT') }
-  it { should have_rule('-A IN_public_allow -p tcp -m tcp --dport 32469 -m conntrack --ctstate NEW -j ACCEPT') }
-  it { should have_rule('-A IN_public_allow -p tcp -m tcp --dport 32400 -m conntrack --ctstate NEW -j ACCEPT') }
+describe iptables(chain: 'INPUT_direct') do
+  it { should have_rule('-A INPUT_direct -p tcp -m tcp -m multiport --dports 2049 -m comment --comment nfs-tcp -j ACCEPT') }
+  it { should have_rule('-A INPUT_direct -p udp -m multiport --dports 2049 -m comment --comment nfs-udp -j ACCEPT') }
+  it { should have_rule('-A INPUT_direct -p tcp -m tcp -m multiport --dports 111 -m comment --comment rpcbind-sunrpc-tcp -j ACCEPT') }
+  it { should have_rule('-A INPUT_direct -p udp -m multiport --dports 111 -m comment --comment rpcbind-sunrpc-udp -j ACCEPT') }
+  it { should have_rule('-A INPUT_direct -p tcp -m tcp -m multiport --dports 22 -m comment --comment ssh -j ACCEPT') }
+  it { should have_rule('-A INPUT_direct -p udp -m multiport --dports 1900 -m comment --comment plex-dlna-udp -j ACCEPT') }
+  it { should have_rule('-A INPUT_direct -p tcp -m tcp -m multiport --dports 3005 -m comment --comment plex-htc-cmpn -j ACCEPT') }
+  it { should have_rule('-A INPUT_direct -p udp -m multiport --dports 5353 -m comment --comment bonjour-avahi -j ACCEPT') }
+  it { should have_rule('-A INPUT_direct -p tcp -m tcp -m multiport --dports 8324 -m comment --comment plex-roku-cmpn -j ACCEPT') }
+  it { should have_rule('-A INPUT_direct -p udp -m multiport --dports 32410:32414 -m comment --comment gdm-ntwrk-dscvry -j ACCEPT') }
+  it { should have_rule('-A INPUT_direct -p tcp -m tcp -m multiport --dports 32469 -m comment --comment plex-dlna-tcp -j ACCEPT') }
+  it { should have_rule('-A INPUT_direct -p tcp -m tcp -m multiport --dports 32400 -m comment --comment plex-web -j ACCEPT') }
 end
 
 # plex repo exists and is enabled
