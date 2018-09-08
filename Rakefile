@@ -41,5 +41,5 @@ task remove_test: [:deletenode_test, :deleteclient_test]
 
 desc 'Bootstrap test server'
 task bootstrap_test: [:berksupload, :remove_test] do
-  sh 'knife bootstrap 192.168.1.234 -E test -N testserver -r role[base_role],role[plexserver_role] --sudo --ssh-user test --ssh-password test --use-sudo-password --bootstrap-version 14.0.202 --bootstrap-vault-item slack:webhooks''
+  sh 'knife bootstrap 192.168.1.234 -E test -N testserver -r role[base_role],role[plexserver_role] --sudo --ssh-user test --ssh-password test --use-sudo-password --bootstrap-version 14.0.202 --bootstrap-vault-item slack:webhooks'
 end
