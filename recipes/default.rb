@@ -10,7 +10,7 @@ firewall 'default' do
 end
 
 # download plex media server rpm
-remote_file '/tmp/plexmediaserver-1.15.4.994-107756f7e.x86_64.rpm' do
+remote_file "#{Chef::Config[:file_cache_path]}/plexmediaserver-1.15.4.994-107756f7e.x86_64.rpm" do
   source 'https://downloads.plex.tv/plex-media-server-new/1.15.4.994-107756f7e/redhat/plexmediaserver-1.15.4.994-107756f7e.x86_64.rpm'
   action :create
   retries 3
@@ -21,7 +21,7 @@ end
 package 'plex' do
   package_name 'plexmediaserver'
   action :install
-  source '/tmp/plexmediaserver-1.15.4.994-107756f7e.x86_64.rpm'
+  source "#{Chef::Config[:file_cache_path]}/plexmediaserver-1.15.4.994-107756f7e.x86_64.rpm"
   notifies :restart, 'service[plexmediaserver]'
 end
 

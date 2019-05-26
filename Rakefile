@@ -46,7 +46,7 @@ task bootstrap_test: [:berksupload, :remove_test] do
   ip_addr = '192.168.1.234'
   environment = 'test'
   node_name = 'testserver'
-  run_list = "role[base_role],role[plexserver_role]"
+  run_list = 'role[base_role],role[plexserver_role]'
   ssh_user = 'test'
   ssh_pw = 'test'
   bootstrap_version = '14.4.56'
