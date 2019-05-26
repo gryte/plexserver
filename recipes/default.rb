@@ -9,20 +9,19 @@ firewall 'default' do
   action :install
 end
 
-# enable plex repo
-yum_repository 'PlexRepo' do
-  description 'PlexRepo'
-  baseurl 'https://downloads.plex.tv/repo/rpm/$basearch/'
-  gpgkey 'https://downloads.plex.tv/plex-keys/PlexSign.key'
-  gpgcheck true
-  enabled true
+# download plex media server rpm
+remote_file '/tmp/plexmediaserver-1.15.4.994-107756f7e.x86_64.rpm' do
+  source 'https://downloads.plex.tv/plex-media-server-new/1.15.4.994-107756f7e/redhat/plexmediaserver-1.15.4.994-107756f7e.x86_64.rpm'
   action :create
+  retries 3
+  retry_delay 2
 end
 
 # install plex rpm
 package 'plex' do
   package_name 'plexmediaserver'
-  action :upgrade
+  action :install
+  source '/tmp/plexmediaserver-1.15.4.994-107756f7e.x86_64.rpm'
   notifies :restart, 'service[plexmediaserver]'
 end
 

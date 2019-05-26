@@ -44,9 +44,3 @@ describe iptables(chain: 'INPUT_direct') do
   it { should have_rule('-A INPUT_direct -p tcp -m tcp -m multiport --dports 32469 -m comment --comment plex-dlna-tcp -j ACCEPT') }
   it { should have_rule('-A INPUT_direct -p tcp -m tcp -m multiport --dports 32400 -m comment --comment plex-web -j ACCEPT') }
 end
-
-# plex repo exists and is enabled
-describe yum.repo('PlexRepo') do
-  it { should exist }
-  it { should be_enabled }
-end
