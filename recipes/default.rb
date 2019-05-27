@@ -23,7 +23,7 @@ end
 # install plex rpm
 package 'plex' do
   package_name 'plexmediaserver'
-  action :install
+  action :upgrade
   source "#{Chef::Config[:file_cache_path]}/#{plexserver_package}"
   notifies :restart, 'service[plexmediaserver]'
 end
